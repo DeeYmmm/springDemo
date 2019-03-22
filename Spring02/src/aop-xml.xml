@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:aop="http://www.springframework.org/schema/aop"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop.xsd">
+
+    <bean id="impl" class="com.aop.xmlaop.JiShuQiImpl"></bean>
+
+    <!--配置切面的bean-->
+    <bean id="aspectLogging" class="com.aop.xmlaop.AspectLogging"></bean>
+    <bean id="validationAspect" class="com.aop.xmlaop.ValidationAspect"></bean>
+
+    <!--配置AOP-->
+    <aop:config>
+        <!--配置切点表达式-->
+        <aop:pointcut id="pointcut" expression="execution(* com.aop.xmlaop.JiShuQi.*(..))"></aop:pointcut>
+        <!--配置切面及通知-->
+        <aop:aspect ref="aspectLogging" order="2">
+            <!--<aop:before method="before" pointcut-ref="pointcut"></aop:before>
+            <aop:after-returning method="afterReturn" pointcut-ref="pointcut"
+                                 returning="result"></aop:after-returning>
+            <aop:after-throwing method="afterThowing" pointcut-ref="pointcut"
+                                throwing="ex"></aop:after-throwing>
+            <aop:after method="after" pointcut-ref="pointcut"></aop:after>-->
+            <aop:around method="around" pointcut-ref="pointcut"></aop:around>
+        </aop:aspect>
+        <aop:aspect ref="validationAspect" order="1">
+            <aop:before method="validation" pointcut-ref="pointcut"></aop:before>
+        </aop:aspect>
+    </aop:config>
+
+</beans>
